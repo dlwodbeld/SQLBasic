@@ -1,0 +1,178 @@
+
+#테이블 전체 출력하기
+SELECT *
+FROM HR.EMPLOYEES;
+
+
+#테이블 특정일부 출력하기
+SELECT EMPLOYEE_ID,FIRST_NAME,LAST_NAME
+FROM HR.EMPLOYEES;
+
+#특정열을 기준으로 내림차순 정렬하여 출력하기.
+SELECT EMPLOYEE_ID,FIRST_NAME,LAST_NAME
+FROM HR.EMPLOYEES
+ORDER BY EMPLOYEE_ID DESC;
+
+#고유한 하나씩만 출력
+SELECT DISTINCT JOB_ID
+FROM HR.EMPLOYEES;
+
+#별칭 설정 AS는 생략 가능.
+SELECT employee_id AS 사원번호, first_name AS 이름, last_name AS 성
+FROM HR.EMPLOYEES;
+
+#두 명칭을 붙일 수 있다.
+SELECT employee_id, first_name || last_name
+FROM HR.EMPLOYEES;
+
+SELECT employee_id, first_name || last_name,
+        email ||'@' || 'company.com'
+FROM HR.EMPLOYEES;
+
+#기본 열값을 이용한 계산
+SELECT employee_id, salary+500,salary-100,(salary*1.1)/2
+FROM HR.EMPLOYEES;
+
+
+SELECT employee_id AS 사원번호,
+salary AS 급여,
+salary+500 AS 추가급여,
+salary-100 AS 인하급여,
+(salary*1.1)/2 AS 조정급여
+FROM HR.EMPLOYEES;
+
+WHERE 절 행에서 원하는 값을 추출할 때 사용
+SELECT *
+FROM HR.EMPLOYEES
+WHERE employee_id = 100;
+
+#글자로 찾을 떄는 작은 따옴표 사용,대소문자 구분 한다.
+SELECT *
+FROM HR.EMPLOYEES;
+WHERE employee_id = 100;
+
+#부등호 연산자
+SELECT *
+FROM HR.EMPLOYEES
+WHERE employee_id >=105;
+
+#BTWEEN A AND B A부터 B까지
+SELECT *
+FROM HR.EMPLOYEES
+WHERE salary BETWEEN 10000 AND 20000;
+
+#IN연산자  특정 항목들이 포함된 행만 출력
+SELECT *
+FROM HR.EMPLOYEES
+WHERE salary IN (10000,17000,24000);
+
+#LIKE 연산자
+LIKE 연산자는 조회 조건 값이 명확하지 않을때 사용
+% 몇글자가 오던 글자가 없건 상관하지 않는다.
+
+SELECT *
+FROM HR.EMPLOYEES
+WHERE job_id LIKE 'AD%';
+
+_ ->글자의미
+SELECT *
+FROM HR.EMPLOYEES
+WHERE job_id LIKE 'AD___'; <--3AD뒤에 3개의 글자가 있는것만 출력
+
+# IS NULL 값이 빈셀을 검색
+SELECT *
+FROM HR.EMPLOYEES
+WHERE manager_id IS NULL;
+
+#AND 두가지 조건을 동시에 만족
+SELECT *
+FROM HR.EMPLOYEES
+WHERE salary > 4000
+AND job_id = 'IT_PROG';
+
+# OR 둘중 하나만이라도 조건에 충족시 출력
+SELECT *
+FROM HR.EMPLOYEES
+WHERE salary > 4000
+AND job_id = 'IT_PROG'
+OR job_id = 'FI_ACCOUNT';
+
+
+# <> 값이 아닌 것들만 출력
+SELECT *
+FROM HR.EMPLOYEES
+WHERE employee_id <> 105;
+
+# NULL값이 아닌경우 출력(NOT 뒤집어서 출력)
+SELECT *
+FROM HR.EMPLOYEES
+WHERE employee_id IS NOT NULL;
+
+
+#함수----------------------------
+함수에는 단일행 함수와 그룹함수가 있는데 차이점이 있다.
+단일함수는 한번에 하나씩,그룹함수는 여러건을동시에 처리
+
+# LOWER 전부 소문자
+UPPER 전부 대문자
+INITCAP 첫글자만 대문자
+SELECT last_name,
+LOWER(last_name) LOWER적용3,
+UPPER(last_name) UPPER적용,
+email,
+INITCAP(email) ININCAP적용
+FROM HR.employees;
+
+#필요한 글자만 잘라내기(앞에 두글자만 잘라서 출력)
+SELECT job_id,
+SUBSTR(job_id,1,2) 적용결과
+FROM HR.employees;
+
+#특정 문자를 찾아 바꾸기
+SELECT job_id, REPLACE(job_id,'ACCOUNT','ACCNT')적용결과 
+FROM HR.employees;
+
+#특정 문자로 자릿수 채우기 왼쪽부터채우기
+SELECT first_name, LPAD(first_name, 12, '*') LPAD적용결과 
+FROM HR.employees;
+오른쪽부터 채우기
+SELECT first_name, RPAD(first_name, 12, '*') LPAD적용결과 
+FROM HR.employees;
+
+#LTRIM(왼쪽부터 지정된글자 제거) RTRIM(오른쪽부터 지정된 글자 제거)
+SELECT job_id,
+LTRIM(job_id,'F') LTRIM적용결과,
+RTRIM(job_id,'T') RTRIM적용결과
+FROM HR.employees;
+
+#아무것도없는 비어있는 공간/글자사이에 있는 여백은 출력하지만 글자사이에 없는 여백은 날린다.
+SELECT 'start'||TRIM('      - space -    ')||'end' 제거된_공백
+FROM dual;
+
+#ROUND 반올림 (대상열,반올림자리)
+1 : 소수점 아래 한자리까지
+-1 : 소수점위 한자리부터
+
+SELECT salary,
+salary/30 월급,
+ROUND(salary/30,0) 적용결과0,
+ROUND(salary/30,1)적용결과1,
+ROUND(salary/30,-1)적용결과MINUS1
+FROM HR.employees;
+
+
+#TRUNC 버림
+1 : 소수점 아래 한자리로
+-1 : 소수점위 한자리부터
+SELECT salary,
+salary/30 월급,
+TRUNC(salary/30,0) 적용결과0,
+TRUNC(salary/30,1)적용결과1,
+TRUNC(salary/30,-1)적용결과MINUS1
+FROM HR.employees;
+
+
+
+
+
+
